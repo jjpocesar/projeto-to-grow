@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ProjetoToGrow.Data;
+using ProjetoToGrow.Context;
 using ProjetoToGrow.Repositories.Interfaces;
 
 namespace ProjetoToGrow.Repositories;

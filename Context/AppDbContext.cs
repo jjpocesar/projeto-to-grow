@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProjetoToGrow.Models;
 
-namespace ProjetoToGrow.Data;
+namespace ProjetoToGrow.Context;
 
 public class AppDbContext : DbContext
 {
