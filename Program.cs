@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProjetoToGrow.Data;
+using ProjetoToGrow.Repositories;
+using ProjetoToGrow.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+builder.Services.AddScoped<IPessoaRepository, PessoaRepository>();
+builder.Services.AddScoped<ICargoRepository, CargoRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 
