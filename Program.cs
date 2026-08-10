@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using ProjetoToGrow.Context;
 using ProjetoToGrow.Repositories;
 using ProjetoToGrow.Repositories.Interfaces;
+using ProjetoToGrow.Services;
+using ProjetoToGrow.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IPessoaRepository, PessoaRepository>();
 builder.Services.AddScoped<ICargoRepository, CargoRepository>();
+
+builder.Services.AddScoped<IPessoaService, PessoaService>();
+builder.Services.AddScoped<ICargoService, CargoService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
