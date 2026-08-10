@@ -13,10 +13,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IPessoaRepository, PessoaRepository>();
 builder.Services.AddScoped<ICargoRepository, CargoRepository>();
 
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
 app.MapGet("/", () => "API projeto-to-grow no ar!");
+app.MapControllers();
 
 app.Run();
