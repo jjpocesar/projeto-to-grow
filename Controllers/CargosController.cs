@@ -15,11 +15,30 @@ public class CargosController : ControllerBase
         _cargoRepository = cargoRepository;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var cargos = await _cargoRepository.GetAllAsync();
+        return Ok(cargos);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var cargo = await _cargoRepository.GetByIdAsync(id);
+        if (cargo is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(cargo);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(Cargo cargo)
     {
         await _cargoRepository.AddAsync(cargo);
-        return CreatedAtAction(nameof(Create), new { id = cargo.Id }, cargo);
+        return CreatedAtAction(nameof(GetById), new { id = cargo.Id }, cargo);
     }
 
     [HttpPut("{id}")]

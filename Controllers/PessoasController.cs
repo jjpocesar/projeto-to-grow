@@ -15,11 +15,30 @@ public class PessoasController : ControllerBase
         _pessoaRepository = pessoaRepository;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var pessoas = await _pessoaRepository.GetAllAsync();
+        return Ok(pessoas);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var pessoa = await _pessoaRepository.GetByIdAsync(id);
+        if (pessoa is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(pessoa);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(Pessoa pessoa)
     {
         await _pessoaRepository.AddAsync(pessoa);
-        return CreatedAtAction(nameof(Create), new { id = pessoa.Id }, pessoa);
+        return CreatedAtAction(nameof(GetById), new { id = pessoa.Id }, pessoa);
     }
 
     [HttpPut("{id}")]
