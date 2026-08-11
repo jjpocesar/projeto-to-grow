@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjetoToGrow.Dtos;
 using ProjetoToGrow.Models;
@@ -5,6 +6,7 @@ using ProjetoToGrow.Services.Interfaces;
 
 namespace ProjetoToGrow.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CargosController : ControllerBase
