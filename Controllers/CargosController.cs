@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using ProjetoToGrow.Dtos;
 using ProjetoToGrow.Models;
 using ProjetoToGrow.Services.Interfaces;
 
@@ -19,7 +20,7 @@ public class CargosController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var cargos = await _cargoService.GetAllAsync();
-        return Ok(cargos);
+        return Ok(cargos.Select(MapToResponseDto));
     }
 
     [HttpGet("{id}")]
@@ -31,18 +32,25 @@ public class CargosController : ControllerBase
             return NotFound();
         }
 
-        return Ok(cargo);
+        return Ok(MapToResponseDto(cargo));
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(Cargo cargo)
+    public async Task<IActionResult> Create(CargoDto dto)
     {
+        var cargo = new Cargo
+        {
+            Nome = dto.Nome,
+            Descricao = dto.Descricao,
+            DataCriacao = dto.DataCriacao
+        };
+
         await _cargoService.AddAsync(cargo);
-        return CreatedAtAction(nameof(GetById), new { id = cargo.Id }, cargo);
+        return CreatedAtAction(nameof(GetById), new { id = cargo.Id }, MapToResponseDto(cargo));
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, Cargo cargo)
+    public async Task<IActionResult> Update(int id, CargoDto dto)
     {
         var existente = await _cargoService.GetByIdAsync(id);
         if (existente is null)
@@ -50,8 +58,11 @@ public class CargosController : ControllerBase
             return NotFound();
         }
 
-        cargo.Id = id;
-        await _cargoService.UpdateAsync(cargo);
+        existente.Nome = dto.Nome;
+        existente.Descricao = dto.Descricao;
+        existente.DataCriacao = dto.DataCriacao;
+
+        await _cargoService.UpdateAsync(existente);
         return NoContent();
     }
 
@@ -67,4 +78,12 @@ public class CargosController : ControllerBase
         await _cargoService.DeleteAsync(id);
         return NoContent();
     }
+
+    private static CargoResponseDto MapToResponseDto(Cargo cargo) => new()
+    {
+        Id = cargo.Id,
+        Nome = cargo.Nome,
+        Descricao = cargo.Descricao,
+        DataCriacao = cargo.DataCriacao
+    };
 }
