@@ -291,6 +291,27 @@
   font-family: inherit;
 }
 
+.campo select {
+  color-scheme: dark;
+  background-color: var(--bg);
+}
+
+.campo select option {
+  background-color: var(--bg);
+  color: var(--text-h);
+}
+
+.campo select option:disabled {
+  color: var(--text);
+}
+
+.campo select option:checked,
+.campo select option:hover,
+.campo select option:focus {
+  background-color: var(--accent);
+  color: #fff;
+}
+
 .form-card button {
   margin-top: 20px;
   padding: 10px 16px;
