@@ -63,20 +63,22 @@ export default function HomePage() {
         </div>
 
         {mostrarCargoForm && (
-          <div className="cargo-popover">
-            <div className="cargo-popover-cabecalho">
-              <h3>Novo cargo</h3>
-              <button
-                type="button"
-                className="botao-fechar"
-                onClick={() => setMostrarCargoForm(false)}
-                aria-label="Fechar"
-              >
-                ×
-              </button>
+          <div className="cargo-popover-overlay" onClick={() => setMostrarCargoForm(false)}>
+            <div className="cargo-popover" onClick={(event) => event.stopPropagation()}>
+              <div className="cargo-popover-cabecalho">
+                <h3>Novo cargo</h3>
+                <button
+                  type="button"
+                  className="botao-fechar"
+                  onClick={() => setMostrarCargoForm(false)}
+                  aria-label="Fechar"
+                >
+                  ×
+                </button>
+              </div>
+              <CargoForm onCriado={handleCargoCriado} />
+              {!carregando && <CargoList cargos={cargos} />}
             </div>
-            <CargoForm onCriado={handleCargoCriado} />
-            {!carregando && <CargoList cargos={cargos} />}
           </div>
         )}
 
