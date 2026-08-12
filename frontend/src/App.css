@@ -91,3 +91,87 @@
   color: var(--text-h);
   cursor: pointer;
 }
+
+.pessoa-form {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.pessoa-form h2 {
+  margin: 0 0 16px;
+  font-size: 18px;
+  color: var(--text-h);
+}
+
+.pessoa-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo label {
+  font-size: 14px;
+}
+
+.campo input,
+.campo select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-h);
+  font-size: 15px;
+}
+
+.pessoa-form button {
+  margin-top: 20px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pessoa-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.pessoa-lista h2 {
+  font-size: 18px;
+  color: var(--text-h);
+  margin-bottom: 12px;
+}
+
+.pessoa-lista-vazia {
+  font-size: 14px;
+}
+
+.pessoa-tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pessoa-tabela th,
+.pessoa-tabela td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.pessoa-tabela th {
+  color: var(--text-h);
+  font-weight: 600;
+}
