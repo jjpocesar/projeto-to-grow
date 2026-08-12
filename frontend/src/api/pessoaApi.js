@@ -10,3 +10,9 @@ export function criarPessoa(dto) {
     body: JSON.stringify(dto),
   })
 }
+
+export function removerPessoa(id) {
+  return apiFetch(`/pessoas/${id}`, {
+    method: 'DELETE',
+  })
+}

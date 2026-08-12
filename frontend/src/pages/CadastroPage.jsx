@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { listarPessoas } from '../api/pessoaApi'
+import { listarPessoas, removerPessoa } from '../api/pessoaApi'
 import { listarCargos } from '../api/cargoApi'
 import PessoaForm from '../components/PessoaForm'
 import PessoaList from '../components/PessoaList'
@@ -34,6 +34,23 @@ export default function CadastroPage() {
   async function handleCargoCriado() {
     await carregarDados()
     setMostrarCargoForm(false)
+  }
+
+  async function handleExcluirPessoa(id) {
+    const confirmar = window.confirm('Tem certeza que deseja excluir esta pessoa?')
+
+    if (!confirmar) {
+      return
+    }
+
+    setErro('')
+
+    try {
+      await removerPessoa(id)
+      await carregarDados()
+    } catch (error) {
+      setErro(error.message)
+    }
   }
 
   return (
@@ -79,7 +96,11 @@ export default function CadastroPage() {
         )}
 
         <PessoaForm cargos={cargos} onCriada={carregarDados} />
-        {carregando ? <p>Carregando...</p> : <PessoaList pessoas={pessoas} />}
+        {carregando ? (
+          <p>Carregando...</p>
+        ) : (
+          <PessoaList pessoas={pessoas} onExcluir={handleExcluirPessoa} />
+        )}
       </section>
     </div>
   )
