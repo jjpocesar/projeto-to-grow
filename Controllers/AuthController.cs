@@ -21,10 +21,10 @@ public class AuthController : ControllerBase
         var sucesso = await _authService.RegisterAsync(dto);
         if (!sucesso)
         {
-            return Conflict("Nome de usuário já está em uso.");
+            return Conflict(new { message = "Nome de usuário já está em uso." });
         }
 
-        return Ok("Usuário registrado com sucesso.");
+        return Ok(new { message = "Usuário registrado com sucesso." });
     }
 
     [HttpPost("login")]
@@ -33,7 +33,7 @@ public class AuthController : ControllerBase
         var resultado = await _authService.LoginAsync(dto);
         if (resultado is null)
         {
-            return Unauthorized("Usuário ou senha inválidos.");
+            return Unauthorized(new { message = "Usuário ou senha inválidos." });
         }
 
         return Ok(resultado);

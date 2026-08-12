@@ -45,7 +45,7 @@ public class PessoasController : ControllerBase
         var cargo = await _cargoService.GetByIdAsync(dto.CargoId);
         if (cargo is null)
         {
-            return BadRequest($"Cargo com id {dto.CargoId} não encontrado.");
+            return BadRequest(new { message = $"Cargo com id {dto.CargoId} não encontrado." });
         }
 
         var pessoa = new Pessoa
@@ -73,7 +73,7 @@ public class PessoasController : ControllerBase
         var cargo = await _cargoService.GetByIdAsync(dto.CargoId);
         if (cargo is null)
         {
-            return BadRequest($"Cargo com id {dto.CargoId} não encontrado.");
+            return BadRequest(new { message = $"Cargo com id {dto.CargoId} não encontrado." });
         }
 
         existente.Nome = dto.Nome;

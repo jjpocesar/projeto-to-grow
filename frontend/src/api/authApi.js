@@ -2,10 +2,19 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 
 async function tratarResposta(response) {
   const texto = await response.text()
-  const dados = texto ? JSON.parse(texto) : null
+  let dados = null
+
+  if (texto) {
+    try {
+      dados = JSON.parse(texto)
+    } catch {
+      dados = texto
+    }
+  }
 
   if (!response.ok) {
-    const mensagem = typeof dados === 'string' ? dados : dados?.title || 'Ocorreu um erro inesperado.'
+    const mensagem =
+      typeof dados === 'string' ? dados : dados?.message || dados?.title || 'Ocorreu um erro inesperado.'
     throw new Error(mensagem)
   }
 
