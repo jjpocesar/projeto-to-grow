@@ -44,10 +44,10 @@ export default function PessoaForm({ cargos, onCriada }) {
   }
 
   return (
-    <form className="pessoa-form" onSubmit={handleSubmit}>
-      <h2>Cadastrar pessoa</h2>
+    <form className="form-card" onSubmit={handleSubmit}>
+      <h3>Cadastrar pessoa</h3>
 
-      <div className="pessoa-form-grid">
+      <div className="form-grid">
         <div className="campo">
           <label htmlFor="nome">Nome *</label>
           <input id="nome" type="text" value={nome} onChange={(event) => setNome(event.target.value)} required />

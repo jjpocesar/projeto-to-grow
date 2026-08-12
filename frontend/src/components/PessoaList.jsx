@@ -8,11 +8,11 @@ function formatarData(valor) {
 
 export default function PessoaList({ pessoas }) {
   if (pessoas.length === 0) {
-    return <p className="pessoa-lista-vazia">Nenhuma pessoa cadastrada ainda.</p>
+    return <p className="lista-vazia">Nenhuma pessoa cadastrada ainda.</p>
   }
 
   return (
-    <table className="pessoa-tabela">
+    <table className="data-table">
       <thead>
         <tr>
           <th>Nome</th>

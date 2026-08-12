@@ -4,6 +4,8 @@ import { listarPessoas } from '../api/pessoaApi'
 import { listarCargos } from '../api/cargoApi'
 import PessoaForm from '../components/PessoaForm'
 import PessoaList from '../components/PessoaList'
+import CargoForm from '../components/CargoForm'
+import CargoList from '../components/CargoList'
 
 export default function HomePage() {
   const { logout } = useAuth()
@@ -40,10 +42,15 @@ export default function HomePage() {
 
       {erro && <p className="auth-erro">{erro}</p>}
 
-      <PessoaForm cargos={cargos} onCriada={carregarDados} />
+      <section className="secao">
+        <h2>Cargos</h2>
+        <CargoForm onCriado={carregarDados} />
+        {carregando ? <p>Carregando...</p> : <CargoList cargos={cargos} />}
+      </section>
 
-      <section className="pessoa-lista">
-        <h2>Pessoas cadastradas</h2>
+      <section className="secao">
+        <h2>Pessoas</h2>
+        <PessoaForm cargos={cargos} onCriada={carregarDados} />
         {carregando ? <p>Carregando...</p> : <PessoaList pessoas={pessoas} />}
       </section>
     </div>

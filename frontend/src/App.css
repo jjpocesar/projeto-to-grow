@@ -92,20 +92,30 @@
   cursor: pointer;
 }
 
-.pessoa-form {
+.secao {
+  margin-bottom: 40px;
+}
+
+.secao > h2 {
+  font-size: 20px;
+  color: var(--text-h);
+  margin-bottom: 16px;
+}
+
+.form-card {
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 24px;
 }
 
-.pessoa-form h2 {
+.form-card h3 {
   margin: 0 0 16px;
-  font-size: 18px;
+  font-size: 16px;
   color: var(--text-h);
 }
 
-.pessoa-form-grid {
+.form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 16px;
@@ -122,16 +132,18 @@
 }
 
 .campo input,
-.campo select {
+.campo select,
+.campo textarea {
   padding: 10px 12px;
   border-radius: 8px;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text-h);
   font-size: 15px;
+  font-family: inherit;
 }
 
-.pessoa-form button {
+.form-card button {
   margin-top: 20px;
   padding: 10px 16px;
   border-radius: 8px;
@@ -143,35 +155,29 @@
   cursor: pointer;
 }
 
-.pessoa-form button:disabled {
+.form-card button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.pessoa-lista h2 {
-  font-size: 18px;
-  color: var(--text-h);
-  margin-bottom: 12px;
-}
-
-.pessoa-lista-vazia {
+.lista-vazia {
   font-size: 14px;
 }
 
-.pessoa-tabela {
+.data-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.pessoa-tabela th,
-.pessoa-tabela td {
+.data-table th,
+.data-table td {
   text-align: left;
   padding: 10px 12px;
   border-bottom: 1px solid var(--border);
   font-size: 14px;
 }
 
-.pessoa-tabela th {
+.data-table th {
   color: var(--text-h);
   font-weight: 600;
 }
