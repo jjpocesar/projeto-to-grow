@@ -39,9 +39,7 @@ export default function CargoForm({ onCriado }) {
   }
 
   return (
-    <form className="form-discreto" onSubmit={handleSubmit}>
-      <h3>Cadastrar cargo</h3>
-
+    <form className="cargo-form" onSubmit={handleSubmit}>
       <div className="form-grid">
         <div className="campo">
           <label htmlFor="cargoNome">Nome *</label>

@@ -14,6 +14,7 @@ export default function HomePage() {
   const [cargos, setCargos] = useState([])
   const [carregando, setCarregando] = useState(true)
   const [erro, setErro] = useState('')
+  const [mostrarCargoForm, setMostrarCargoForm] = useState(false)
 
   const carregarDados = useCallback(async () => {
     setErro('')
@@ -33,6 +34,11 @@ export default function HomePage() {
     carregarDados()
   }, [carregarDados])
 
+  async function handleCargoCriado() {
+    await carregarDados()
+    setMostrarCargoForm(false)
+  }
+
   return (
     <div className="home-page">
       <header className="home-header">
@@ -43,13 +49,37 @@ export default function HomePage() {
       {erro && <p className="auth-erro">{erro}</p>}
 
       <section className="secao">
-        <h2>Cargos</h2>
-        <CargoForm onCriado={carregarDados} />
-        {carregando ? <p>Carregando...</p> : <CargoList cargos={cargos} />}
-      </section>
+        <div className="secao-cabecalho">
+          <h2>Pessoas</h2>
+          <div className="secao-acoes">
+            <button
+              type="button"
+              className="botao-secundario"
+              onClick={() => setMostrarCargoForm((atual) => !atual)}
+            >
+              Criar cargo
+            </button>
+          </div>
+        </div>
 
-      <section className="secao">
-        <h2>Pessoas</h2>
+        {mostrarCargoForm && (
+          <div className="cargo-popover">
+            <div className="cargo-popover-cabecalho">
+              <h3>Novo cargo</h3>
+              <button
+                type="button"
+                className="botao-fechar"
+                onClick={() => setMostrarCargoForm(false)}
+                aria-label="Fechar"
+              >
+                ×
+              </button>
+            </div>
+            <CargoForm onCriado={handleCargoCriado} />
+            {!carregando && <CargoList cargos={cargos} />}
+          </div>
+        )}
+
         <PessoaForm cargos={cargos} onCriada={carregarDados} />
         {carregando ? <p>Carregando...</p> : <PessoaList pessoas={pessoas} />}
       </section>

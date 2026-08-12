@@ -61,6 +61,12 @@ builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    DbSeeder.Seed(context);
+}
+
 app.MapGet("/", () => "API projeto-to-grow no ar!");
 
 app.UseCors("DefaultCorsPolicy");
