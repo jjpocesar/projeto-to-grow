@@ -12,25 +12,22 @@ export default function PessoaList({ pessoas }) {
   }
 
   return (
-    <table className="data-table">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Idade</th>
-          <th>Cargo</th>
-          <th>Data de admissão</th>
-        </tr>
-      </thead>
-      <tbody>
-        {pessoas.map((pessoa) => (
-          <tr key={pessoa.id}>
-            <td>{pessoa.nome}</td>
-            <td>{pessoa.idade || '-'}</td>
-            <td>{pessoa.cargo?.nome || '-'}</td>
-            <td>{formatarData(pessoa.dataAdmissao)}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className="pessoa-grid">
+      {pessoas.map((pessoa) => (
+        <article className="pessoa-card" key={pessoa.id}>
+          <div className="pessoa-card-imagem" aria-hidden="true">
+            <span>{pessoa.nome?.charAt(0).toUpperCase()}</span>
+          </div>
+          <div className="pessoa-card-corpo">
+            <span className="pessoa-card-tag">{pessoa.cargo?.nome || 'Sem cargo'}</span>
+            <h3>{pessoa.nome}</h3>
+            <p>
+              {pessoa.idade ? `${pessoa.idade} anos · ` : ''}
+              Admitido em {formatarData(pessoa.dataAdmissao)}
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
   )
 }
