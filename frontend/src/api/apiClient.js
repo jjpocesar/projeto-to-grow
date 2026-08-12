@@ -14,6 +14,10 @@ async function tratarResposta(response) {
   }
 
   if (!response.ok) {
+    if (response.status === 401) {
+      window.dispatchEvent(new Event('sessao-expirada'))
+    }
+
     const mensagem =
       typeof dados === 'string' ? dados : dados?.message || dados?.title || 'Ocorreu um erro inesperado.'
     throw new Error(mensagem)
