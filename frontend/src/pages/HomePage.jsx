@@ -1,90 +1,51 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useAuth } from '../context/AuthContext'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { listarPessoas } from '../api/pessoaApi'
 import { listarCargos } from '../api/cargoApi'
-import PessoaForm from '../components/PessoaForm'
-import PessoaList from '../components/PessoaList'
-import CargoForm from '../components/CargoForm'
-import CargoList from '../components/CargoList'
 
 export default function HomePage() {
-  const { logout } = useAuth()
-
-  const [pessoas, setPessoas] = useState([])
-  const [cargos, setCargos] = useState([])
-  const [carregando, setCarregando] = useState(true)
+  const [totalPessoas, setTotalPessoas] = useState(null)
+  const [totalCargos, setTotalCargos] = useState(null)
   const [erro, setErro] = useState('')
-  const [mostrarCargoForm, setMostrarCargoForm] = useState(false)
-
-  const carregarDados = useCallback(async () => {
-    setErro('')
-
-    try {
-      const [pessoasData, cargosData] = await Promise.all([listarPessoas(), listarCargos()])
-      setPessoas(pessoasData)
-      setCargos(cargosData)
-    } catch (error) {
-      setErro(error.message)
-    } finally {
-      setCarregando(false)
-    }
-  }, [])
 
   useEffect(() => {
-    carregarDados()
-  }, [carregarDados])
+    async function carregarResumo() {
+      try {
+        const [pessoas, cargos] = await Promise.all([listarPessoas(), listarCargos()])
+        setTotalPessoas(pessoas.length)
+        setTotalCargos(cargos.length)
+      } catch (error) {
+        setErro(error.message)
+      }
+    }
 
-  async function handleCargoCriado() {
-    await carregarDados()
-    setMostrarCargoForm(false)
-  }
+    carregarResumo()
+  }, [])
 
   return (
     <div className="home-page">
       <header className="home-header">
         <h1>Projeto To Grow</h1>
-        <button onClick={logout}>Sair</button>
       </header>
 
       {erro && <p className="auth-erro">{erro}</p>}
 
-      <section className="secao">
-        <div className="secao-cabecalho">
-          <h2>Pessoas</h2>
-          <div className="secao-acoes">
-            <button
-              type="button"
-              className="botao-secundario"
-              onClick={() => setMostrarCargoForm((atual) => !atual)}
-            >
-              Criar cargo
-            </button>
-          </div>
+      <p className="home-boas-vindas">Bem-vindo(a)! Aqui está um resumo do que já foi cadastrado.</p>
+
+      <div className="dashboard-grid">
+        <div className="dashboard-card">
+          <span className="dashboard-card-numero">{totalPessoas ?? '-'}</span>
+          <span className="dashboard-card-label">Pessoas cadastradas</span>
         </div>
+        <div className="dashboard-card">
+          <span className="dashboard-card-numero">{totalCargos ?? '-'}</span>
+          <span className="dashboard-card-label">Cargos cadastrados</span>
+        </div>
+      </div>
 
-        {mostrarCargoForm && (
-          <div className="cargo-popover-overlay" onClick={() => setMostrarCargoForm(false)}>
-            <div className="cargo-popover" onClick={(event) => event.stopPropagation()}>
-              <div className="cargo-popover-cabecalho">
-                <h3>Novo cargo</h3>
-                <button
-                  type="button"
-                  className="botao-fechar"
-                  onClick={() => setMostrarCargoForm(false)}
-                  aria-label="Fechar"
-                >
-                  ×
-                </button>
-              </div>
-              <CargoForm onCriado={handleCargoCriado} />
-              {!carregando && <CargoList cargos={cargos} />}
-            </div>
-          </div>
-        )}
-
-        <PessoaForm cargos={cargos} onCriada={carregarDados} />
-        {carregando ? <p>Carregando...</p> : <PessoaList pessoas={pessoas} />}
-      </section>
+      <Link to="/cadastro" className="botao-primario-link">
+        Ir para o cadastro
+      </Link>
     </div>
   )
 }

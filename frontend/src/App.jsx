@@ -3,6 +3,7 @@ import RotaProtegida from './components/RotaProtegida'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import HomePage from './pages/HomePage'
+import CadastroPage from './pages/CadastroPage'
 import './App.css'
 
 function App() {
@@ -15,6 +16,14 @@ function App() {
         element={
           <RotaProtegida>
             <HomePage />
+          </RotaProtegida>
+        }
+      />
+      <Route
+        path="/cadastro"
+        element={
+          <RotaProtegida>
+            <CadastroPage />
           </RotaProtegida>
         }
       />

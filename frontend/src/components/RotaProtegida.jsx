@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import AppLayout from './AppLayout'
 
 export default function RotaProtegida({ children }) {
   const { estaAutenticado } = useAuth()
@@ -8,5 +9,5 @@ export default function RotaProtegida({ children }) {
     return <Navigate to="/login" replace />
   }
 
-  return children
+  return <AppLayout>{children}</AppLayout>
 }
