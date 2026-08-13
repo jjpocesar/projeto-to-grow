@@ -16,6 +16,15 @@ function gerarTom(texto) {
   return Math.abs(hash) % 360
 }
 
+function IconeEditar() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 20h9" />
+      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+    </svg>
+  )
+}
+
 function IconeLixeira() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -28,7 +37,7 @@ function IconeLixeira() {
   )
 }
 
-export default function PessoaList({ pessoas, onExcluir }) {
+export default function PessoaList({ pessoas, onEditar, onExcluir }) {
   if (pessoas.length === 0) {
     return <p className="lista-vazia">Nenhuma pessoa cadastrada ainda.</p>
   }
@@ -41,17 +50,30 @@ export default function PessoaList({ pessoas, onExcluir }) {
 
         return (
           <article className="pessoa-card" key={pessoa.id}>
-            {onExcluir && (
-              <button
-                type="button"
-                className="pessoa-card-excluir"
-                onClick={() => onExcluir(pessoa.id)}
-                aria-label={`Excluir ${pessoa.nome}`}
-                title="Excluir"
-              >
-                <IconeLixeira />
-              </button>
-            )}
+            <div className="pessoa-card-acoes">
+              {onEditar && (
+                <button
+                  type="button"
+                  className="pessoa-card-acao"
+                  onClick={() => onEditar(pessoa)}
+                  aria-label={`Editar ${pessoa.nome}`}
+                  title="Editar"
+                >
+                  <IconeEditar />
+                </button>
+              )}
+              {onExcluir && (
+                <button
+                  type="button"
+                  className="pessoa-card-acao pessoa-card-acao-perigo"
+                  onClick={() => onExcluir(pessoa.id)}
+                  aria-label={`Excluir ${pessoa.nome}`}
+                  title="Excluir"
+                >
+                  <IconeLixeira />
+                </button>
+              )}
+            </div>
 
             <div className="pessoa-card-imagem" aria-hidden="true" style={{ background: gradiente }}>
               <span>{pessoa.nome?.charAt(0).toUpperCase()}</span>

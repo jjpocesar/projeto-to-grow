@@ -11,6 +11,13 @@ export function criarPessoa(dto) {
   })
 }
 
+export function atualizarPessoa(id, dto) {
+  return apiFetch(`/pessoas/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(dto),
+  })
+}
+
 export function removerPessoa(id) {
   return apiFetch(`/pessoas/${id}`, {
     method: 'DELETE',

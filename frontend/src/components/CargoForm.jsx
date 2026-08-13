@@ -1,11 +1,22 @@
-import { useState } from 'react'
-import { criarCargo } from '../api/cargoApi'
+import { useEffect, useState } from 'react'
+import { atualizarCargo, criarCargo } from '../api/cargoApi'
 
-export default function CargoForm({ onCriado }) {
+export default function CargoForm({ cargoEditando, onSalvo, onCancelar }) {
   const [nome, setNome] = useState('')
   const [descricao, setDescricao] = useState('')
   const [erro, setErro] = useState('')
   const [carregando, setCarregando] = useState(false)
+
+  useEffect(() => {
+    if (cargoEditando) {
+      setNome(cargoEditando.nome)
+      setDescricao(cargoEditando.descricao)
+    } else {
+      setNome('')
+      setDescricao('')
+    }
+    setErro('')
+  }, [cargoEditando])
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -22,15 +33,19 @@ export default function CargoForm({ onCriado }) {
       const dto = {
         nome: nome.trim(),
         descricao: descricao.trim(),
-        dataCriacao: new Date().toISOString(),
+        dataCriacao: cargoEditando ? cargoEditando.dataCriacao : new Date().toISOString(),
       }
 
-      await criarCargo(dto)
+      if (cargoEditando) {
+        await atualizarCargo(cargoEditando.id, dto)
+      } else {
+        await criarCargo(dto)
+      }
 
       setNome('')
       setDescricao('')
 
-      onCriado()
+      onSalvo()
     } catch (error) {
       setErro(error.message)
     } finally {
@@ -66,9 +81,17 @@ export default function CargoForm({ onCriado }) {
 
       {erro && <p className="auth-erro">{erro}</p>}
 
-      <button type="submit" disabled={carregando}>
-        {carregando ? 'Salvando...' : 'Cadastrar'}
-      </button>
+      <div className="form-acoes">
+        <button type="submit" className="botao-primario" disabled={carregando}>
+          {carregando ? 'Salvando...' : cargoEditando ? 'Salvar alterações' : 'Cadastrar'}
+        </button>
+
+        {cargoEditando && (
+          <button type="button" className="botao-secundario" onClick={onCancelar} disabled={carregando}>
+            Cancelar
+          </button>
+        )}
+      </div>
     </form>
   )
 }

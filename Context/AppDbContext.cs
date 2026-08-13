@@ -20,7 +20,8 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Pessoa>()
             .HasOne(p => p.Cargo)
             .WithMany()
-            .HasForeignKey(p => p.CargoId);
+            .HasForeignKey(p => p.CargoId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Username)

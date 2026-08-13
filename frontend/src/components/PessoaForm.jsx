@@ -1,13 +1,36 @@
-import { useState } from 'react'
-import { criarPessoa } from '../api/pessoaApi'
+import { useEffect, useState } from 'react'
+import { atualizarPessoa, criarPessoa } from '../api/pessoaApi'
 
-export default function PessoaForm({ cargos, onCriada }) {
+function formatarDataParaInput(valor) {
+  if (!valor) {
+    return ''
+  }
+
+  return new Date(valor).toISOString().slice(0, 10)
+}
+
+export default function PessoaForm({ cargos, pessoaEditando, onSalva, onCancelarEdicao }) {
   const [nome, setNome] = useState('')
   const [idade, setIdade] = useState('')
   const [cargoId, setCargoId] = useState('')
   const [dataAdmissao, setDataAdmissao] = useState('')
   const [erro, setErro] = useState('')
   const [carregando, setCarregando] = useState(false)
+
+  useEffect(() => {
+    if (pessoaEditando) {
+      setNome(pessoaEditando.nome ?? '')
+      setIdade(pessoaEditando.idade ? String(pessoaEditando.idade) : '')
+      setCargoId(pessoaEditando.cargo?.id ? String(pessoaEditando.cargo.id) : '')
+      setDataAdmissao(formatarDataParaInput(pessoaEditando.dataAdmissao))
+    } else {
+      setNome('')
+      setIdade('')
+      setCargoId('')
+      setDataAdmissao('')
+    }
+    setErro('')
+  }, [pessoaEditando])
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -28,14 +51,18 @@ export default function PessoaForm({ cargos, onCriada }) {
         dataAdmissao: dataAdmissao ? new Date(dataAdmissao).toISOString() : new Date().toISOString(),
       }
 
-      await criarPessoa(dto)
+      if (pessoaEditando) {
+        await atualizarPessoa(pessoaEditando.id, dto)
+      } else {
+        await criarPessoa(dto)
+      }
 
       setNome('')
       setIdade('')
       setCargoId('')
       setDataAdmissao('')
 
-      onCriada()
+      onSalva()
     } catch (error) {
       setErro(error.message)
     } finally {
@@ -45,7 +72,7 @@ export default function PessoaForm({ cargos, onCriada }) {
 
   return (
     <form className="form-card" onSubmit={handleSubmit}>
-      <h3>Cadastrar pessoa</h3>
+      <h3>{pessoaEditando ? 'Editar pessoa' : 'Cadastrar pessoa'}</h3>
 
       <div className="form-grid">
         <div className="campo">
@@ -83,9 +110,17 @@ export default function PessoaForm({ cargos, onCriada }) {
 
       {erro && <p className="auth-erro">{erro}</p>}
 
-      <button type="submit" disabled={carregando}>
-        {carregando ? 'Salvando...' : 'Cadastrar'}
-      </button>
+      <div className="form-acoes">
+        <button type="submit" className="botao-primario" disabled={carregando}>
+          {carregando ? 'Salvando...' : pessoaEditando ? 'Salvar alterações' : 'Cadastrar'}
+        </button>
+
+        {pessoaEditando && (
+          <button type="button" className="botao-secundario" onClick={onCancelarEdicao} disabled={carregando}>
+            Cancelar edição
+          </button>
+        )}
+      </div>
     </form>
   )
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProjetoToGrow.Dtos;
 using ProjetoToGrow.Models;
 using ProjetoToGrow.Services.Interfaces;
@@ -77,7 +78,15 @@ public class CargosController : ControllerBase
             return NotFound();
         }
 
-        await _cargoService.DeleteAsync(id);
+        try
+        {
+            await _cargoService.DeleteAsync(id);
+        }
+        catch (DbUpdateException)
+        {
+            return Conflict(new { message = "Não é possível excluir este cargo porque há pessoas cadastradas com ele. Troque o cargo dessas pessoas antes de excluir." });
+        }
+
         return NoContent();
     }
 
