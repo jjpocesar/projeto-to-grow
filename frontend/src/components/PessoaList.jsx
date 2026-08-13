@@ -6,6 +6,16 @@ function formatarData(valor) {
   return new Date(valor).toLocaleDateString('pt-BR')
 }
 
+function gerarTom(texto) {
+  let hash = 0
+
+  for (let i = 0; i < texto.length; i += 1) {
+    hash = texto.charCodeAt(i) + ((hash << 5) - hash)
+  }
+
+  return Math.abs(hash) % 360
+}
+
 function IconeLixeira() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -25,33 +35,38 @@ export default function PessoaList({ pessoas, onExcluir }) {
 
   return (
     <div className="pessoa-grid">
-      {pessoas.map((pessoa) => (
-        <article className="pessoa-card" key={pessoa.id}>
-          {onExcluir && (
-            <button
-              type="button"
-              className="pessoa-card-excluir"
-              onClick={() => onExcluir(pessoa.id)}
-              aria-label={`Excluir ${pessoa.nome}`}
-              title="Excluir"
-            >
-              <IconeLixeira />
-            </button>
-          )}
+      {pessoas.map((pessoa) => {
+        const tom = gerarTom(pessoa.nome || 'To Grow')
+        const gradiente = `linear-gradient(135deg, hsl(${tom}, 75%, 58%), hsl(${(tom + 45) % 360}, 70%, 40%))`
 
-          <div className="pessoa-card-imagem" aria-hidden="true">
-            <span>{pessoa.nome?.charAt(0).toUpperCase()}</span>
-          </div>
-          <div className="pessoa-card-corpo">
-            <span className="pessoa-card-tag">{pessoa.cargo?.nome || 'Sem cargo'}</span>
-            <h3>{pessoa.nome}</h3>
-            <p>
-              {pessoa.idade ? `${pessoa.idade} anos · ` : ''}
-              Admitido em {formatarData(pessoa.dataAdmissao)}
-            </p>
-          </div>
-        </article>
-      ))}
+        return (
+          <article className="pessoa-card" key={pessoa.id}>
+            {onExcluir && (
+              <button
+                type="button"
+                className="pessoa-card-excluir"
+                onClick={() => onExcluir(pessoa.id)}
+                aria-label={`Excluir ${pessoa.nome}`}
+                title="Excluir"
+              >
+                <IconeLixeira />
+              </button>
+            )}
+
+            <div className="pessoa-card-imagem" aria-hidden="true" style={{ background: gradiente }}>
+              <span>{pessoa.nome?.charAt(0).toUpperCase()}</span>
+            </div>
+            <div className="pessoa-card-corpo">
+              <span className="pessoa-card-tag">{pessoa.cargo?.nome || 'Sem cargo'}</span>
+              <h3>{pessoa.nome}</h3>
+              <p>
+                {pessoa.idade ? `${pessoa.idade} anos · ` : ''}
+                Admitido em {formatarData(pessoa.dataAdmissao)}
+              </p>
+            </div>
+          </article>
+        )
+      })}
     </div>
   )
 }

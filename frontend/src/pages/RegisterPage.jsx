@@ -32,7 +32,9 @@ export default function RegisterPage() {
   return (
     <div className="auth-page">
       <form className="auth-card" onSubmit={handleSubmit}>
+        <div className="auth-logo" aria-hidden="true">TG</div>
         <h1>Criar conta</h1>
+        <p className="auth-subtitulo">Cadastre-se para começar a usar a plataforma</p>
 
         <label htmlFor="username">Usuário</label>
         <input

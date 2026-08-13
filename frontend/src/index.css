@@ -2,23 +2,33 @@
   --text: #94a3b8;
   --text-h: #e8edf7;
   --bg: #0b1224;
+  --bg-elevado: #101a33;
   --border: #22304d;
   --accent: #3b82f6;
+  --accent-2: #22d3ee;
   --accent-bg: rgba(59, 130, 246, 0.15);
   --accent-border: rgba(59, 130, 246, 0.5);
   --danger: #f87171;
   --success: #34d399;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
 
   font: 16px/145% var(--sans);
   color-scheme: dark;
   color: var(--text);
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(59, 130, 246, 0.14), transparent 45%),
+    radial-gradient(circle at 100% 30%, rgba(34, 211, 238, 0.09), transparent 45%),
+    var(--bg);
+  background-attachment: fixed;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -31,7 +41,49 @@ body {
   flex-direction: column;
 }
 
-h1 {
+h1,
+h2,
+h3 {
   color: var(--text-h);
   font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: var(--accent);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-border);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }

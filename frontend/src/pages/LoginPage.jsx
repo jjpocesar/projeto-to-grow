@@ -29,7 +29,9 @@ export default function LoginPage() {
   return (
     <div className="auth-page">
       <form className="auth-card" onSubmit={handleSubmit}>
+        <div className="auth-logo" aria-hidden="true">TG</div>
         <h1>Entrar</h1>
+        <p className="auth-subtitulo">Acesse sua conta para continuar</p>
 
         <label htmlFor="username">Usuário</label>
         <input
